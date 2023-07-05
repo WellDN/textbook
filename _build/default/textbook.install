@@ -1,0 +1,8 @@
+lib: [
+  "_build/install/default/lib/textbook/META"
+  "_build/install/default/lib/textbook/dune-package"
+  "_build/install/default/lib/textbook/opam"
+]
+bin: [
+  "_build/install/default/bin/textbook"
+]

@@ -1,0 +1,4 @@
+(executables
+ (public_names textbook fastfib)
+ (names main fastfib)
+ (libraries textbook))
