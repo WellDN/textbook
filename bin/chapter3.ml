@@ -228,3 +228,169 @@ let rec earliest = function
 (* Use the functions insert and lookup from the section on association lists to construct an association list that maps the
 integer 1 to the string “one”, 2 to “two”, and 3 to “three”. Lookup the key 2. Lookup the key 4.*)
 
+let insert k v lst =
+    (k, v) :: lst
+
+let rec lookup k = function
+    | [] -> None
+    | (k', v) :: t -> if k = k' then Some v else lookup k t
+
+let dict = insert 3 "three" (insert 2 "two" (insert 1 "one" []))
+let lk_two = lookup 2 dict
+let lk_four = lookup 4 dict
+
+(*
+• Define a variant type suit that represents the four suits, ♣ ♦ ♥ ♠, in a standard 52-card deck. All the constructors
+of your type should be constant.
+• Define a type rank that represents the possible ranks of a card: 2, 3, …, 10, Jack, Queen, King, or Ace. There
+are many possible solutions; you are free to choose whatever works for you. One is to make rank be a synonym
+of int, and to assume that Jack=11, Queen=12, King=13, and Ace=1 or 14. Another is to use variants.
+• Define a type card that represents the suit and rank of a single card. Make it a record with two fields.
+Define a few values of type card: the Ace of Clubs, the Queen of Hearts, the Two of Diamonds, the Seven of
+Spades.
+*)
+
+type suit  = Clubs | Diamonds | Hearts | Spades
+
+type rank = Number of int | Jack | Queen | King | Ace
+
+type card = { suit: suit; rank: rank }
+
+let ace_of_clubs : card = { suit = Clubs; rank = Ace }
+let queen_of_hearts : card = { suit = Hearts; rank = Queen }
+let two_of_diamonds : card = { suit = Diamonds; rank = Number 2 }
+let seven_of_spades : card = { suit = Spades; rank = Number 7 }
+
+(*
+For each pattern in the list below, give a value of type int option list that does not match the pattern and is not
+the empty list, or explain why that’s impossible.
+• Some x :: tl
+• [Some 3110; None]
+• [Some x; _]
+• h1 :: h2 :: tl
+• h :: tl
+*)
+
+let lst1 : int option list = [None; Some 0]
+let lst2 : int option list = [Some 3110; None]
+let lst3 : int option list = [None; Some 0]
+let lst4 : int option list = [Some 0]
+
+(*
+Complete the quadrant function below, which should return the quadrant of the given x, y point according to the
+diagram on the right (borrowed from Wikipedia). Points that lie on an axis do not belong to any quandrant. Hints: (a)
+define a helper function for the sign of an integer, (b) match against a pair.
+*)
+
+type quad = I | II | III | IV
+
+type sign = Neg | Zero | Pos
+
+let sign (x: int) : sign =
+    if x = 0 then Zero
+    else if x > 0 then Pos
+    else Neg
+
+let quadrant : int * int -> quad option = fun (x, y) ->
+    match sign x, sign y with
+    | Pos, Pos -> Some I
+    | Neg, Pos -> Some II
+    | Neg, Neg -> Some III
+    | Pos, Neg -> Some IV
+    | _ -> None
+
+(*
+Rewrite the quadrant function to use the when syntax. You won’t need your helper function from before.
+*)
+
+let quadrant_when : int * int -> quad option = function
+    | x, y when x > 0 && y > 0 -> Some I
+    | x, y when x < 0 && y > 0 -> Some II
+    | x, y when x < 0 && y < 0 -> Some III
+    | x, y when x > 0 && y < 0 -> Some IV
+    | _ -> None
+
+(*
+Write a function depth : 'a tree -> int that returns the number of nodes in any longest path from the root to
+a leaf. For example, the depth of an empty tree (simply Leaf) is 0, and the depth of tree t above is 3. Hint: there is a
+library function max : 'a -> 'a -> 'a that returns the maximum of any two values of the same type.
+*)
+
+
+type 'a tree = Leaf | Node of 'a * 'a tree * 'a tree
+
+let rec depth = function
+    | Leaf -> 0
+    | Node (_, left, right) -> 1 + max (depth left) (depth right)
+
+(*
+Write a function same_shape : 'a tree -> 'b tree -> bool that determines whether two trees have the
+same shape, regardless of whether the values they carry at each node are the same. Hint: use a pattern match with three
+branches, where the expression being matched is a pair of trees.
+*)
+
+let rec same_shape t1 t2 =
+    match t1, t2 with
+    | Leaf, Leaf -> true
+    | Node (_, l1, r1), Node (_, l2, r2) -> (same_shape l1 l2) && (same_shape r1 r2)
+    | _ -> false
+
+(*
+Write a function list_max : int list -> int that returns the maximum integer in a list, or raises Failure
+"list_max" if the list is empty.
+*)
+
+
+let rec list_max_safe x = function
+    | [] -> x
+    | h :: t -> list_max_safe (Stdlib.max x h) t
+
+    let list_max = function
+    | [] -> failwith "list_max"
+    | h :: t -> list_max_safe h t
+
+(*
+Write a function list_max_string : int list -> string that returns a string containing the maximum
+integer in a list, or the string "empty" (note, not the exception Failure "empty" but just the string "empty") if
+the list is empty. Hint: string_of_int in the standard library will do what its name suggests.
+*)
+
+let list_max_string lst =
+    try string_of_int (list_max lst) with
+    | Failure _ -> "empty"
+
+(*
+Write a function is_bst : ('a*'b) tree -> bool that returns true if and only if the given tree satisfies the
+binary search tree invariant. An efficient version of this function that visits each node at most once is somewhat tricky to
+write. Hint: write a recursive helper function that takes a tree and either gives you (i) the minimum and maximum value
+in the tree, or (ii) tells you that the tree is empty, or (iii) tells you that the tree does not satisfy the invariant. Your is_bst
+function will not be recursive, but will call your helper function and pattern match on the result. You will need to define a
+new variant type for the return type of your helper function.
+*)
+
+type 'a tree =
+    Node of 'a tree * 'a tree * 'a tree | Leaf;;
+
+let rec is_bst x = function
+    | Leaf -> Node (Leaf, x, Leaf) 
+    | Node (l, v, r) as n ->
+            if x < v then Node (is_bst x l, v, r)
+            else if x > v then Node (l, v, is_bst x r)
+            else n 
+
+(*
+   Modify your definition of quadrant to use polymorphic variants.
+ *)
+
+let poly_sign x : [> `Neg | `Pos | `Zero ] =
+    if x < 0 then `Neg
+    else if x = 0 then `Zero
+    else `Pos 
+
+let poly_quad (x, y) : [> `I | `II | `III | `IV ] option =
+    match poly_sign x, poly_sign y with
+    | `Pos, `Pos -> Some `I
+    | `Neg, `Pos -> Some `II
+    | `Neg, `Neg -> Some `III
+    | `Pos, `Neg -> Some `IV
+    | _ -> None
