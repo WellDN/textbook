@@ -3,14 +3,32 @@
 (** @canonical Dune__exe.Chapter3 *)
 module Chapter3 = Dune__exe__Chapter3
 
+(** @canonical Dune__exe.Chapter4 *)
+module Chapter4 = Dune__exe__Chapter4
+
+(** @canonical Dune__exe.Currying *)
+module Currying = Dune__exe__Currying
+
 (** @canonical Dune__exe.Fastfib *)
 module Fastfib = Dune__exe__Fastfib
 
 (** @canonical Dune__exe.Fib *)
 module Fib = Dune__exe__Fib
 
+(** @canonical Dune__exe.Fold_recursive_library *)
+module Fold_recursive_library = Dune__exe__Fold_recursive_library
+
 (** @canonical Dune__exe.Main *)
 module Main = Dune__exe__Main
 
+(** @canonical Dune__exe.Modules *)
+module Modules = Dune__exe__Modules
+
 (** @canonical Dune__exe.Mycode *)
 module Mycode = Dune__exe__Mycode
+
+(** @canonical Dune__exe.On_trees *)
+module On_trees = Dune__exe__On_trees
+
+(** @canonical Dune__exe.Pipelining *)
+module Pipelining = Dune__exe__Pipelining
