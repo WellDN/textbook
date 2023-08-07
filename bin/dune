@@ -1,4 +1,4 @@
 (executables
- (public_names textbook fastfib)
- (names main fastfib)
+ (public_names textbook mystack)
+ (names main mystack)
  (libraries textbook))

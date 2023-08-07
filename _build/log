@@ -1,9 +1,9 @@
-# dune exec ./bin/modules.exe
+# dune exec ./bin/chapter5.exe
 # OCAMLPARAM: unset
 # Shared cache: disabled
 # Workspace root: /home/w/d/textbook
 # Auto-detected concurrency: 8
-$ /home/w/.opam/4.14.0/bin/ocamlc.opt -config > /tmp/dune_51d617_output
+$ /home/w/.opam/4.14.0/bin/ocamlc.opt -config > /tmp/dune_1c542c_output
 # Dune context:
 #  { name = "default"
 #  ; kind = "default"

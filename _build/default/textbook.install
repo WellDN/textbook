@@ -4,5 +4,6 @@ lib: [
   "_build/install/default/lib/textbook/opam"
 ]
 bin: [
+  "_build/install/default/bin/mystack"
   "_build/install/default/bin/textbook"
 ]
